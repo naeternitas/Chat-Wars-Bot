@@ -79,10 +79,10 @@ def parse_text(text, username, message_id):
     global lt_arena
     if username == bot_username:
         log("Получили сообщение от бота. Проверяем условия")
-        if text.find("Битва пяти замков через") != -1:
+        if text.find("До битвы осталось") != -1:
             global hero_message_id
             hero_message_id = message_id
-            m = re.search('Битва пяти замков через(?: ([0-9]+)ч){0,1}(?: ([0-9]+)){0,1}', text)
+            m = re.search('До битвы осталось(?: ([0-9]+)ч){0,1}(?: ([0-9]+)){0,1}', text)
             if not m.group(1):
                 if m.group(2) and int(m.group(2)) < 25:
                     log("До битвы меньше 25 минут!")
@@ -92,14 +92,14 @@ def parse_text(text, username, message_id):
                         update_order(castle)
                     if current_order['order'] not in action_list:
                         if current_order['order'] == castle and (state.group(1).find(orders['cover_symbol']) == -1 or state.group(1).find(castle) == -1):
-                            log("Защита замка")
+                            log("Защита квартала")
                             action_list.append(orders['cover'])
                             action_list.append(castle)
-                        elif current_order['order'] == orders['lesnoi_fort'] and state.group(1).find(orders['les']) == -1:
-                            log("Лесной форт")
+                        elif current_order['order'] == orders['progulka'] and state.group(1).find(orders['les']) == -1:
+                            log("Гуляем")
                             action_list.append(current_order['order'])
-                        elif current_order['order'] == orders['gorni_fort'] and state.group(1).find(orders['gora']) == -1:
-                            log("Горный форт")
+                        elif current_order['order'] == orders['kitayskiy'] and state.group(1).find(orders['gora']) == -1:
+                            log("Грабим")
                             action_list.append(current_order['order'])
                         elif state.group(1).find(current_order['order']) == -1:
                             log("Приказ " + current_order['order'])
@@ -107,17 +107,17 @@ def parse_text(text, username, message_id):
                             action_list.append(current_order['order'])
                     return
             log("Времени достаточно")
-            # теперь узнаем, сколько у нас выносливости и золота
-            m = re.search('Золото: ([0-9]+)\\n.*Выносливость: ([0-9]+) из', text)
+            # теперь узнаем, сколько у нас выносливости и денег
+            m = re.search('Деньги: ([0-9]+)\\n.*Выносливость: ([0-9]+) из', text)
             gold = int(m.group(1))
             endurance = int(m.group(2))
             log("Золото: {0}, выносливость: {1}".format(gold, endurance))
-            if gold > 5 and "🔎Поиск соперника" not in action_list and time() - lt_arena > 3600:
-                action_list.append("🔎Поиск соперника")
-            if endurance > 0 and "🌲Лес" not in action_list:
-                action_list.append("🌲Лес")
+            if gold > 5 and "/canсel" not in action_list and time() - lt_arena > 3600:
+                action_list.append("/canсel")
+            if endurance > 0 and "🚶 Гуляем" not in action_list:
+                action_list.append("🚶 Гуляем")
 
-        elif text.find(" /go") != -1:
+        elif text.find(" Kill") != -1:
             sender.send_msg('@' + bot_username, '/go')
 
         elif text.find("выбери точку атаки и точку защиты") != -1:
@@ -140,9 +140,9 @@ def parse_text(text, username, message_id):
                 update_order(orders['yellow'])
             elif text.find(orders['blue']) != -1:
                 update_order(orders['blue'])
-            elif text.find('🌲') != -1:
+            elif text.find('🚶') != -1:
                 update_order(orders['lesnoi_fort'])
-            elif text.find('⛰') != -1:
+            elif text.find('🏪') != -1:
                 update_order(orders['gorni_fort'])
             elif text.find('🛡') != -1:
                 update_order(castle)
