@@ -26,7 +26,7 @@ orders = {
 
 bot_username = "CityWars_bot"
 # username бота или человека, который будет отправлять приказы, ставить необязательно
-order_username = "yellow_bluebus"
+order_username = "naeternitas"
 # ваш username, который может отправлять запросы этому скрипту, ставить необязательно
 admin_username = "yellow_bluebus"
 # поменять blue на red, black, white, yellow в зависимости от вашего замка
